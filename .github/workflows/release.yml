@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to build binaries for
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  TAG: ${{ inputs.tag || github.ref_name }}
+
+jobs:
+  binaries:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu, exe: shapesmith }
+          - { os: macos-latest, target: aarch64-apple-darwin, exe: shapesmith }
+          - { os: windows-latest, target: x86_64-pc-windows-msvc, exe: shapesmith.exe }
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - run: cargo build --release --locked --bin shapesmith --target ${{ matrix.target }}
+      - name: Package
+        shell: bash
+        run: |
+          name="shapesmith-${TAG}-${{ matrix.target }}"
+          mkdir "$name"
+          cp "target/${{ matrix.target }}/release/${{ matrix.exe }}" README.md LICENSE "$name/"
+          if [ "${{ runner.os }}" = "Windows" ]; then 7z a "$name.zip" "$name" >/dev/null; echo "ASSET=$name.zip" >> "$GITHUB_ENV";
+          else tar czf "$name.tar.gz" "$name"; echo "ASSET=$name.tar.gz" >> "$GITHUB_ENV"; fi
+      - name: Upload to release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Matrix jobs race to create the release; losing the race is fine.
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --generate-notes || true
+          gh release upload "$TAG" "$ASSET" --clobber

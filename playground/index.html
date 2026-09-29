@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shapesmith: JSON to TypeScript, Zod and JSON Schema</title>
+  <meta name="description" content="Paste JSON samples and get TypeScript types, Zod schemas and JSON Schema. Runs in your browser via WebAssembly; nothing is uploaded.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1 class="wordmark">shape<span>smith</span></h1>
+      <p class="tagline">Paste a few JSON samples. Get the types they share.</p>
+    </div>
+    <nav class="links">
+      <a href="https://github.com/ardazeybek-dev/shapesmith">GitHub</a>
+      <a href="https://www.npmjs.com/package/shapesmith">npm</a>
+    </nav>
+  </header>
+
+  <main class="workbench">
+    <section class="pane input-pane" aria-labelledby="input-title">
+      <div class="pane-head">
+        <h2 id="input-title">Samples</h2>
+        <label class="example-pick">Load example
+          <select id="example">
+            <option value="">Choose…</option>
+          </select>
+        </label>
+      </div>
+      <textarea id="input" wrap="off" spellcheck="false" autocomplete="off" aria-labelledby="input-title" aria-describedby="input-help"></textarea>
+      <p id="input-help" class="help">One JSON document, an array of samples, or one JSON value per line.</p>
+      <fieldset class="options">
+        <legend class="sr-only">Options</legend>
+        <label class="name-field">Type name <input id="rootName" value="Root" spellcheck="false"></label>
+        <label class="check"><input type="checkbox" id="detectFormats" checked> Detect formats</label>
+        <label class="check"><input type="checkbox" id="detectEnums" checked> Detect enums</label>
+        <label class="check"><input type="checkbox" id="splitTopLevelArrays" checked> Top-level array is samples</label>
+      </fieldset>
+    </section>
+
+    <section class="pane output-pane" aria-label="Generated code">
+      <div class="pane-head">
+        <div class="tabs" role="tablist" aria-label="Output format">
+          <button role="tab" id="tab-typescript" aria-selected="true" data-target="typescript">TypeScript</button>
+          <button role="tab" id="tab-zod" aria-selected="false" tabindex="-1" data-target="zod">Zod</button>
+          <button role="tab" id="tab-jsonSchema" aria-selected="false" tabindex="-1" data-target="jsonSchema">JSON Schema</button>
+        </div>
+        <button id="copy" class="copy">Copy</button>
+      </div>
+      <pre id="output" role="tabpanel" aria-labelledby="tab-typescript" tabindex="0"><code></code></pre>
+      <p id="status" class="status" aria-live="polite">Loading the WebAssembly module…</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Runs entirely in your browser: the inference engine is Rust compiled to WebAssembly, and your JSON never leaves this page.
+      Also available as an <a href="https://www.npmjs.com/package/shapesmith">npm package</a> and a <a href="https://github.com/ardazeybek-dev/shapesmith/releases">command-line tool</a>.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
