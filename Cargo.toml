@@ -34,4 +34,14 @@ codegen-units = 1
 strip = true
 
 [package.metadata.wasm-pack.profile.release]
-wasm-opt = ["-Os"]
+# Rust's wasm32 target enables these proposals by default; older wasm-opt
+# releases (as bundled with wasm-pack) reject the module unless told so.
+wasm-opt = [
+  "-Os",
+  "--enable-bulk-memory",
+  "--enable-nontrapping-float-to-int",
+  "--enable-sign-ext",
+  "--enable-mutable-globals",
+  "--enable-reference-types",
+  "--enable-multivalue",
+]
