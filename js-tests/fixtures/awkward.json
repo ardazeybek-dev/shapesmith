@@ -1,0 +1,8 @@
+[
+  {"content-type": "text/plain", "2fa": true, "__proto__": 1, "constructor": "x", "ünvan": "Mühendis",
+   "matrix": [[1, 2], [3, 4.5]], "mixed": [1, "two", {"three": 3}, null, [4]], "deep": {"a": {"b": {"c": [{"d": true}]}}}},
+  {"content-type": "application/json", "2fa": false, "__proto__": 2, "constructor": "y", "ünvan": "Tasarımcı",
+   "matrix": [], "mixed": "just a string", "deep": {"a": {"b": null}}, "big": 9007199254740993},
+  "not an object",
+  42
+]

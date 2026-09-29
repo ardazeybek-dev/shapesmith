@@ -1,0 +1,12 @@
+{
+  "location": {"lat": 41.0082, "lon": 28.9784, "name": "İstanbul", "elevation_m": 39},
+  "generated": "2026-09-29",
+  "units": {"temperature": "°C", "wind": "km/h"},
+  "hourly": [
+    {"time": "2026-09-29T00:00:00+03:00", "temp": 18.4, "wind": 12, "condition": "clear", "precip_mm": 0},
+    {"time": "2026-09-29T01:00:00+03:00", "temp": 17.9, "wind": 11, "condition": "clear", "precip_mm": 0},
+    {"time": "2026-09-29T02:00:00+03:00", "temp": 17.1, "wind": 14, "condition": "cloudy", "precip_mm": 0.2},
+    {"time": "2026-09-29T03:00:00+03:00", "temp": 16.8, "wind": null, "condition": "rain", "precip_mm": 1.4}
+  ],
+  "alerts": []
+}
