@@ -187,6 +187,16 @@ export interface Customer {
     }
 
     #[test]
+    fn inherited_key_names_are_guarded_in_zod() {
+        let out = generate(r#"[{"constructor": 1, "__proto__": 2}, {"__proto__": 3}]"#, &Default::default())
+            .unwrap();
+        assert!(out.zod.contains("z.preprocess("), "optional `constructor` needs own-keys-only input");
+        assert!(out.zod.contains(r#"    ["__proto__"]: z.int(),"#));
+        let required = generate(r#"{"toString": "x"}"#, &Default::default()).unwrap();
+        assert!(!required.zod.contains("z.preprocess("), "a required field is always an own key");
+    }
+
+    #[test]
     fn empty_arrays_are_unknown() {
         let out = generate(r#"{"tags": []}"#, &Default::default()).unwrap();
         assert!(out.typescript.contains("tags: unknown[];"));
