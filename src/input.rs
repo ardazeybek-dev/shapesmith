@@ -41,19 +41,16 @@ pub fn parse_samples(text: &str, split_arrays: bool) -> Result<Vec<Value>, Parse
         Err(e) => e,
     };
 
-    let lines: Vec<(usize, &str)> = text
-        .lines()
-        .enumerate()
-        .map(|(i, l)| (i + 1, l.trim()))
-        .filter(|(_, l)| !l.is_empty())
-        .collect();
+    let lines: Vec<(usize, &str)> =
+        text.lines().enumerate().map(|(i, l)| (i + 1, l.trim())).filter(|(_, l)| !l.is_empty()).collect();
     if lines.len() < 2 {
         return Err(ParseError { message: document_error.to_string(), line: None });
     }
     lines
         .into_iter()
         .map(|(line, l)| {
-            serde_json::from_str(l).map_err(|e| ParseError { message: format!("not valid JSON ({e})"), line: Some(line) })
+            serde_json::from_str(l)
+                .map_err(|e| ParseError { message: format!("not valid JSON ({e})"), line: Some(line) })
         })
         .collect()
 }

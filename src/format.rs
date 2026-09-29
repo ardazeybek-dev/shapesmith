@@ -202,7 +202,9 @@ mod tests {
         for ok in ["2024-05-01T10:00:00Z", "2024-05-01T10:00:00.123Z", "2024-05-01T23:59:59+03:00"] {
             assert_eq!(detect(ok), DATE_TIME, "{ok}");
         }
-        for bad in ["2024-05-01 10:00:00Z", "2024-05-01T10:00:00", "2024-05-01T24:00:00Z", "2024-05-01T10:00:00.Z"] {
+        for bad in
+            ["2024-05-01 10:00:00Z", "2024-05-01T10:00:00", "2024-05-01T24:00:00Z", "2024-05-01T10:00:00.Z"]
+        {
             assert_eq!(detect(bad), 0, "{bad}");
         }
     }
@@ -227,7 +229,9 @@ mod tests {
         for ok in ["https://example.com", "http://localhost:8080/a/b?q=1#top", "https://x.io/%20a"] {
             assert_eq!(detect(ok), URL, "{ok}");
         }
-        for bad in ["ftp://x.com", "https://", "https://exa mple.com", "https://x.com/a b", "https://x.com/%zz"] {
+        for bad in
+            ["ftp://x.com", "https://", "https://exa mple.com", "https://x.com/a b", "https://x.com/%zz"]
+        {
             assert_eq!(detect(bad), 0, "{bad}");
         }
     }
