@@ -9,7 +9,9 @@ fn run(args: &[&str], stdin: &str) -> Output {
         .stderr(Stdio::piped())
         .spawn()
         .expect("binary runs");
-    child.stdin.take().unwrap().write_all(stdin.as_bytes()).unwrap();
+    // On a usage error the binary exits without reading stdin, so this write
+    // can fail with a broken pipe; the exit status is what gets asserted.
+    let _ = child.stdin.take().unwrap().write_all(stdin.as_bytes());
     child.wait_with_output().unwrap()
 }
 
