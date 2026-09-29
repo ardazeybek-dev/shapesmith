@@ -1,0 +1,36 @@
+[package]
+name = "shapesmith"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Infer TypeScript types, Zod schemas and JSON Schema from JSON samples. Rust core, runs natively and in the browser via WebAssembly."
+license = "MIT"
+repository = "https://github.com/ardazeybek-dev/shapesmith"
+homepage = "https://ardazeybek-dev.github.io/shapesmith/"
+readme = "README.md"
+keywords = ["json", "typescript", "zod", "json-schema", "wasm"]
+categories = ["development-tools", "wasm", "command-line-utilities"]
+exclude = ["playground/", "js-tests/", ".github/"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "shapesmith"
+path = "src/main.rs"
+
+[dependencies]
+serde_json = { version = "1.0", features = ["preserve_order"] }
+indexmap = "2"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-Os"]

@@ -1,0 +1,11 @@
+/target
+/pkg
+/playground/pkg
+node_modules/
+.env
+.env.*
+*.log
+.idea/
+.vscode/
+*.pem
+*.key
